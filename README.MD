@@ -48,6 +48,10 @@ int main()
 ```
 
 # Contributor
-kevz#2211
-free#1234
-Abood#1550
+me
+
+[free#1234](https://github.com/smhman)
+
+[Abood#1550](https://github.com/AboodTBR)
+
+[Alexander#9673](https://github.com/Alexander9673)
