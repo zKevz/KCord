@@ -100,7 +100,7 @@ void OnReady()
 int main(int argc, char* argv[]) 
 {
     Discord::DiscordClientConfig config;
-    config.Token = "ODE3OTcxNjg0ODU4Mzk2Njcy.YERRfg.HXBW1NT3RdN2P-foHMXCRGsqc9k";
+    config.Token = "ur-token";
     config.Prefix = "&";
     config.Threshold = 250;
     config.EnableDM = false;
