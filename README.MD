@@ -36,7 +36,7 @@ int main()
     config.EnableDM = false;
     config.PrefixCaseSensitive = false;
 
-	Discord::DiscordClient client;
+    Discord::DiscordClient client(config);
 
     client.OnReady([]() { std::cout << "Bot is ready!\n"; });
     client.OnMessageCreated(OnMessage);
