@@ -1,0 +1,21 @@
+#pragma once
+
+namespace Discord
+{
+	enum class DiscordOpcode
+	{
+		DISPATCH,
+		HEARTBEAT,
+		IDENTIFY,
+		STATUS_UPDATE,
+		VOICE_STATE_UPDATE,
+		VOICE_SERVER_PING,
+		RESUME,
+		RECONNECT,
+		REQUEST_GUILD_MEMBERS,
+		INVALID_SESSION,
+		HELLO,
+		HEARTBEAT_ACK,
+		GUILD_SYNC
+	};
+}
