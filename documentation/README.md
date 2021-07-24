@@ -6,13 +6,18 @@
 	- [Get Channel Messages](#get-channel-messages)
 	- [Get Channel Message](#get-channel-message)
 	- [Send Message](#send-message)
-	- [Add Reaction To Message](#add-reaction)
+	- [Add Message Reaction](#add-reaction)
 	- [Remove Own Message Reaction](#remove-own-reaction)
 	- [Remove User Message Reaction](#remove-user-reaction)
 	- [Get Users Reactions](#get-reactions)
 	- [Remove All Reactions](#remove-all-reactions)
 	- [Remove All Reactions For Specific Emoji](#remove-all-reactions-for-specific-emoji)
 	- [Edit Message](#edit-message)
+	- [Delete Message](#delete-message)
+	- [Bulk Delete Messages](#bulk-delete-messages)
+	- [Edit Channel Permissions](#edit-permissions)
+	- [Get Channel Invites](#get-invites)
+	- [Delete Channel Permission](#delete-permission)
 
 # Channels
 - [Editing Channel](#editing-channel)
@@ -20,13 +25,18 @@
 - [Get Channel Messages](#get-channel-messages)
 - [Get Channel Message](#get-channel-message)
 - [Send Message](#send-message)
-- [Add Reaction To Message](#add-reaction)
+- [Add Message Reaction](#add-reaction)
 - [Remove Own Message Reaction](#remove-own-reaction)
 - [Remove User Message Reaction](#remove-user-reaction)
 - [Get Users Reactions](#get-reactions)
 - [Remove All Reactions](#remove-all-reactions)
 - [Remove All Reactions For Specific Emoji](#remove-all-reactions-for-specific-emoji)
 - [Edit Message](#edit-message)
+- [Delete Message](#delete-message)
+- [Bulk Delete Messages](#bulk-delete-messages)
+- [Edit Channel Permissions](#edit-permissions)
+- [Get Channel Invites](#get-invites)
+- [Delete Channel Permission](#delete-permission)
 
 ## Editing Channel
 In order to edit channel, you would need to cast it to a specific channel
@@ -244,3 +254,127 @@ channel->RemoveAllMessageReactionsForEmoji(message, Discord::DiscordEmoji::FromU
 ```
 
 ## Edit Message
+To edit message, you would need to call `EditMessage` function
+
+This function has 3 overloads, but it leads to:
+- Message => Can be as id (Snowflake) or DiscordMessage object
+- Lambda (DiscordMessageEdit) => Lambda
+
+Example:
+
+```cpp
+channel->EditMessage(message, [](Discord::DiscordMessageEdit* edit)
+{
+	edit->Content = "Edited!";
+});
+```
+
+```cpp
+channel->EditMessage(1299783912387123, [](Discord::DiscordMessageEdit* edit)
+{
+	edit->Content = "Hello World!";
+});
+```
+
+## Delete Message
+To delete message you would need to call `DeleteMessage` function
+
+This function has 3 overloads, but it leads to:
+- Message => Can be as id (Snowflake) or DiscordMessage object
+
+## Bulk Delete Messages
+To bulk delete messages you would need to call `DeleteMessages` function
+
+This function require list of message id to delete
+
+Example:
+
+```cpp
+channel->DeleteMessages({ 868339337048252497, 868339123128252, 8681393378123681 });
+```
+
+## Edit Channel Permission
+In order to edit channel permission, you would need to cast it to a specific channel
+
+For example if you want to edit a Text Channel permission, you would need to cast it to DiscordTextChannel object
+
+*Info: DM Channel and Group DM Channel can't be edited*
+
+```cpp
+auto textChannel = std::dynamic_pointer_cast<Discord::DiscordTextChannel>(channel);
+
+if (textChannel)
+{
+	// Do something
+}
+
+auto newsChannel = std::dynamic_pointer_cast<Discord::DiscordNewsChannel>(channel);
+
+if (newsChannel)
+{
+	// Do something
+}
+```
+
+After you have casted it, now you will be able to access `EditPermission` function
+
+This function has 3 overloads and it leads to:
+- User / Role => Can be as id (Snowflake) or as an object
+- Lambda (DiscordPermissionOverwrite) => Lambda
+
+Example:
+
+```cpp
+channel->EditPermission(34805882584209186, [](Discord::DiscordPermissionOverwrite* perm)
+{
+	perm->Allow(Discord::DiscordPermissionsFlags::VIEW_CHANNEL);
+	perm->Deny(Discord::DiscordPermissionsFlags::ADD_REACTIONS);
+});
+```
+
+The code above will change the permission of User/Role with id 34805882584209186
+
+That User/Role can view channel but can't add message reaction
+
+## Get Invites
+To get list of invite, you would need to call `GetInvites` function
+
+Example:
+
+```cpp
+auto invites = channel->GetInvites();
+```
+
+## Delete Permission
+In order to delete Role / User permission, you would need to cast it to a specific channel
+
+For example if you want to delete permission in Text Channel, you would need to cast it to DiscordTextChannel object
+
+*Info: DM Channel and Group DM Channel can't be used*
+
+```cpp
+auto textChannel = std::dynamic_pointer_cast<Discord::DiscordTextChannel>(channel);
+
+if (textChannel)
+{
+	// Do something
+}
+
+auto newsChannel = std::dynamic_pointer_cast<Discord::DiscordNewsChannel>(channel);
+
+if (newsChannel)
+{
+	// Do something
+}
+```
+
+After you have casted it, now you will be able to access `DeletePermission` function
+
+This function has 3 overloads but it leads to:
+- Role / User => Can be as id (Snowflake) or DiscordUser object or DiscordRole object
+
+Example:
+
+```cpp
+channel->DeletePermission(12345678911);
+```
