@@ -15,7 +15,7 @@
 	- [Edit Message](#edit-message)
 	- [Delete Message](#delete-message)
 	- [Bulk Delete Messages](#bulk-delete-messages)
-	- [Edit Channel Permissions](#edit-permissions)
+	- [Edit Channel Permission](#edit-permission)
 	- [Get Channel Invites](#get-invites)
 	- [Delete Channel Permission](#delete-permission)
 
@@ -34,7 +34,7 @@
 - [Edit Message](#edit-message)
 - [Delete Message](#delete-message)
 - [Bulk Delete Messages](#bulk-delete-messages)
-- [Edit Channel Permissions](#edit-permissions)
+- [Edit Channel Permission](#edit-permission)
 - [Get Channel Invites](#get-invites)
 - [Delete Channel Permission](#delete-permission)
 
