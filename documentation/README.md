@@ -37,6 +37,11 @@
 - [Edit Channel Permission](#edit-permission)
 - [Get Channel Invites](#get-invites)
 - [Delete Channel Permission](#delete-permission)
+- [Get Pinned Messages](#get-pinned-messages)
+- [Pin Message](#pin-message)
+- [Unpin Message](#unpin-message)
+- [Add Recipient](#add-recipient)
+- [Remove Recipient](#remove-recipient)
 
 ## Editing Channel
 In order to edit channel, you would need to cast it to a specific channel
@@ -383,4 +388,56 @@ Example:
 
 ```cpp
 channel->DeletePermission(12345678911);
+```
+
+# Get Pinned Messages
+To get pinned messages you would need to call `GetPinnedMessages` function
+
+Example:
+
+```cpp
+auto pinnedMessages = channel->GetPinnedMessages();
+```
+
+# Pin Message
+To pin message you would need to call `PinMessage` function
+
+This function has many overloads but it leads to:
+- Message => Can be as id (Snowflake) or DiscordMessage object
+
+# Unpin Message
+To unpin message you would need to call `UnpinMessage` function
+
+This function has many overloads but it leads to:
+- Message => Can be as id (Snowflake) or DiscordMessage object
+
+# Add Recipient
+This will only work in DM / Group DM channels
+
+To add recipient you would need to call `AddRecipient` function
+
+This function has 2 overloads which just leads to:
+- User => DiscordUser object
+- Access Token => Access Token string
+
+Example:
+
+```cpp
+pDMChannel->AddRecipient(user, "token");
+groupDMChannel->AddRecipient(user, "token");
+```
+
+# Remove Recipient
+
+This will only work in DM / Group DM channels
+
+To add recipient you would need to call `RemoveRecipient` function
+
+This function has 3 overloads which leads to:
+- User => Can be as id (Snowflake) or DiscordUser object
+
+Example:
+
+```cpp
+pDMChannel->RemoveRecipient(69420);
 ```

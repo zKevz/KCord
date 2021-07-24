@@ -16,6 +16,13 @@ namespace Discord
 	public:
 		void Edit(const std::function<void(DiscordGroupDMChannelEdit*)>& func);
 
+		void AddRecipient(const Ptr<DiscordUser> user, const std::string& token);
+		void AddRecipient(const DiscordUser& user, const std::string& token);
+
+		void RemoveRecipient(Snowflake id);
+		void RemoveRecipient(const Ptr<DiscordUser> user);
+		void RemoveRecipient(const DiscordUser& user);
+
 		Snowflake GetOwnerId() const { return OwnerId; }
 		Snowflake GetLastMessageId() const { return LastMessageId; }
 
