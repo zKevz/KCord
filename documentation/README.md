@@ -18,6 +18,11 @@
 	- [Edit Channel Permission](#edit-permission)
 	- [Get Channel Invites](#get-invites)
 	- [Delete Channel Permission](#delete-permission)
+	- [Get Pinned Messages](#get-pinned-messages)
+	- [Pin Message](#pin-message)
+	- [Unpin Message](#unpin-message)
+	- [Add Recipient](#add-recipient)
+	- [Remove Recipient](#remove-recipient)
 
 # Channels
 - [Editing Channel](#editing-channel)
