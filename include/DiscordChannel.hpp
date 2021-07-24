@@ -60,9 +60,9 @@ namespace Discord
 	public:
 		static DiscordChannel* Create(DiscordClient* client, DiscordGuild* guild, const Json& data);
 
-		DiscordMessage Send(const DiscordEmbed& embed);
-		DiscordMessage Send(const std::string& msg = "", bool tts = false, std::optional<DiscordEmbed> embed = {});
-		DiscordMessage SendFile(const std::string& file);
+		Ptr<DiscordMessage> Send(const DiscordEmbed& embed);
+		Ptr<DiscordMessage> Send(const std::string& msg = "", bool tts = false, std::optional<DiscordEmbed> embed = {});
+		Ptr<DiscordMessage> SendFile(const std::string& file);
 
 		void PinMessage(Snowflake id);
 		void PinMessage(const Ptr<DiscordMessage> message);

@@ -44,13 +44,15 @@ namespace Discord
 		return channel;
 	}
 
-	DiscordMessage DiscordChannel::Send(const DiscordEmbed& embed)
+	Ptr<DiscordMessage> DiscordChannel::Send(const DiscordEmbed& embed)
 	{
 		return Send("", false, embed);
 	}
 
-	DiscordMessage DiscordChannel::Send(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed)
+	Ptr<DiscordMessage> DiscordChannel::Send(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed)
 	{
+		Ptr<DiscordMessage> ptr;
+
 		Json json;
 		json["tts"] = tts;
 		json["content"] = msg;
@@ -61,11 +63,20 @@ namespace Discord
 			json["embeds"].emplace_back(embed->Serialize());
 		}
 
-		return DiscordMessage(Client, DiscordRestAPI::Post("/channels/" + Id.GetValueString() + "/messages", json));
+		Json result = DiscordRestAPI::Post("/channels/" + Id.GetValueString() + "/messages", json);
+
+		if (!result.is_null())
+		{
+			ptr.reset(new DiscordMessage(Client, result));
+		}
+
+		return ptr;
 	}
 
-	DiscordMessage DiscordChannel::SendFile(const std::string& file)
+	Ptr<DiscordMessage> DiscordChannel::SendFile(const std::string& file)
 	{
+		Ptr<DiscordMessage> ptr;
+
 		if (!std::filesystem::exists(file))
 		{
 			throw "File" + file + " not found.";
@@ -74,7 +85,14 @@ namespace Discord
 		Json json;
 		json["file"] = file;
 
-		return DiscordMessage(Client, DiscordRestAPI::PostFile("/channels/" + Id.GetValueString() + "/messages", file, json));
+		auto result = DiscordRestAPI::PostFile("/channels/" + Id.GetValueString() + "/messages", file, json);
+
+		if (!result.is_null())
+		{
+			ptr.reset(new DiscordMessage(Client, result));
+		}
+
+		return ptr;
 	}
 
 	void DiscordChannel::PinMessage(Snowflake id)
