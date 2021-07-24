@@ -282,6 +282,12 @@ To delete message you would need to call `DeleteMessage` function
 This function has 3 overloads, but it leads to:
 - Message => Can be as id (Snowflake) or DiscordMessage object
 
+Example:
+
+```cpp
+channel->DeleteMessage(102378123716231732);
+```
+
 ## Bulk Delete Messages
 To bulk delete messages you would need to call `DeleteMessages` function
 
@@ -293,7 +299,7 @@ Example:
 channel->DeleteMessages({ 868339337048252497, 868339123128252, 8681393378123681 });
 ```
 
-## Edit Channel Permission
+## Edit Permission
 In order to edit channel permission, you would need to cast it to a specific channel
 
 For example if you want to edit a Text Channel permission, you would need to cast it to DiscordTextChannel object
