@@ -139,6 +139,5 @@ int main(int argc, char* argv[])
     presence.ActivityType = Discord::DiscordActivityType::LISTENING;
 
     client.SetPresence(presence);
-
     client.Run();
 }
