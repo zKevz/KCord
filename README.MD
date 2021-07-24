@@ -48,10 +48,18 @@ int main()
 ```
 
 # Contributor
+<<<<<<< HEAD
 [Me](https://github.com/zKevz)
+=======
+me
+>>>>>>> 2e3d3b08cfa0052e5f9a898ae33bd1f7e5da5b5e
 
 [free#1234](https://github.com/smhman)
 
 [Abood#1550](https://github.com/AboodTBR)
 
+<<<<<<< HEAD
 [Alexander#9673](https://github.com/Alexander9673)
+=======
+[Alexander#9673](https://github.com/Alexander9673)
+>>>>>>> 2e3d3b08cfa0052e5f9a898ae33bd1f7e5da5b5e
