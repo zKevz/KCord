@@ -44,6 +44,21 @@ namespace Discord
 		if (CHECK("available"))
 			bIsAvailable = json["available"].get<bool>();
 	}
+
+	Json DiscordEmojiCreate::Serialize() const
+	{
+		Json json;
+		json["name"] = Name;
+		json["image"] = DiscordUtils::GetImageData(ImageFilePath);
+
+		for (const auto& role : RolesAllowed)
+		{
+			json["roles"].emplace_back(role.GetValueString());
+		}
+
+		return json;
+	}
+
 	Json DiscordEmojiEdit::Serialize() const
 	{
 		Json json;

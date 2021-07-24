@@ -419,6 +419,11 @@ namespace Discord
         DiscordRestAPI::Post("/guilds/" + Id.GetValueString() + "/roles", role.Serialize());
     }
 
+    void DiscordGuild::CreateEmoji(const DiscordEmojiCreate& emoji)
+    {
+        DiscordRestAPI::Post("/guilds/" + Id.GetValueString() + "/emojis", emoji.Serialize());
+    }
+
     void DiscordGuild::CreateChannel(const DiscordChannelCreate& channel)
     {
         DiscordRestAPI::Post("/guilds/" + Id.GetValueString() + "/channels", channel.Serialize());

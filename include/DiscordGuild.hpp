@@ -298,6 +298,7 @@ namespace Discord
 		void RemoveMemberRole(const Ptr<DiscordGuildMember> member, Snowflake roleId);
 
 		void CreateRole(const DiscordRoleInfo& role);
+		void CreateEmoji(const DiscordEmojiCreate& emoji);
 		void CreateChannel(const DiscordChannelCreate& channel);
 
 		void EditRole(Snowflake id, const std::function<void(DiscordRoleInfo*)>& func);

@@ -17,6 +17,16 @@ namespace Discord
 		std::vector<Snowflake> RolesAllowed;
 	};
 
+	class DiscordEmojiCreate
+	{
+	public:
+		std::string Name;
+		std::string ImageFilePath;
+		std::vector<Snowflake> RolesAllowed;
+
+		Json Serialize() const;
+	};
+
 	class DiscordGuild;
 	class DiscordEmoji
 	{
