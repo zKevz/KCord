@@ -3,6 +3,14 @@ KCord is C++ Unofficial wrapper for the Discord API
 
 It is designed to be as fast as possible, low memory, and reliable.
 
+# Requirement
+To use this library, you would need to install these libraries:
+- [Boost](https://www.boost.org/) (1.74 is default version, you should change it if you have different version.)
+- [OpenSSL](https://www.openssl.org/)
+- [cpr](https://github.com/whoshuu/cpr)
+- [websocketpp](https://github.com/zaphoyd/websocketpp)
+- [nlohmann-json](https://github.com/nlohmann/json)
+
 # Documentation
 You can see the documentation in [documentation tree](https://github.com/zKevz/KCord/tree/main/documentation)
 

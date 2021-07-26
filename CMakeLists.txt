@@ -10,7 +10,6 @@ set(TESTING ON)
 
 find_package(cpr REQUIRED)
 find_package(Boost 1.74 REQUIRED COMPONENTS random system thread regex)
-find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(websocketpp REQUIRED)
 find_package(nlohmann_json REQUIRED)
