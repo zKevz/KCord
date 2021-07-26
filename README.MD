@@ -47,6 +47,13 @@ int main()
 
 ```
 
+# Misc
+This library is not done yet, and there is plenty features to add, such as:
+
+- Voice, from connecting to sending data, etc
+
+- More framework
+
 # Contributor
 [Me](https://github.com/zKevz)
 
@@ -55,3 +62,8 @@ int main()
 [Abood#1550](https://github.com/AboodTBR)
 
 [Alexander#9673](https://github.com/Alexander9673)
+
+# Question?
+Please join this discord server to ask questions related to this library
+
+[![KCord Discord Server](https://discord.com/api/guilds/734711245697187881/embed.png?style=banner1)](https://discord.gg/YQg8x29MPw)
