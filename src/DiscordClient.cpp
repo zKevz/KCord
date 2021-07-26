@@ -202,6 +202,19 @@ namespace Discord
 		return ptr;
 	}
 
+	Ptr<DiscordChannel> DiscordClient::GetChannel(Snowflake id)
+	{
+		Ptr<DiscordChannel> ptr;
+
+		Json json;
+		if (DiscordRestAPI::Get("/channels/" + id.GetValueString(), &json))
+		{
+			ptr.reset(DiscordChannel::Create(this, nullptr, json));
+		}
+
+		return ptr;
+	}
+
 	Ptr<DiscordDMChannel> DiscordClient::GetOrCreateDMChannel(Snowflake id)
 	{
 		if (auto iterator = DMChannels.find(id); iterator != DMChannels.end())
@@ -224,12 +237,12 @@ namespace Discord
 
 	Ptr<DiscordDMChannel> DiscordClient::GetOrCreateDMChannel(const DiscordUser& user)
 	{
-		return Ptr<DiscordDMChannel>();
+		return GetOrCreateDMChannel(user.Id);
 	}
 
 	Ptr<DiscordDMChannel> DiscordClient::GetOrCreateDMChannel(const Ptr<DiscordUser> user)
 	{
-		return Ptr<DiscordDMChannel>();
+		return GetOrCreateDMChannel(user->Id);
 	}
 
 	void DiscordClient::Send(const std::string& msg)
@@ -876,7 +889,7 @@ namespace Discord
 						return;
 					}
 
-					InteractivityService.Invoke(message);
+					InteractivityService.InvokeIncomingMessage(message);
 
 					DiscordMessageEventInfo info;
 					info.Guild = message->Guild;
@@ -917,38 +930,36 @@ namespace Discord
 			}
 			else if (type == "MESSAGE_REACTION_ADD")
 			{
-				if (ReactionAddedCallback)
+				if (CHECK_M(data, "emoji") &&
+					CHECK_M(data, "user_id") &&
+					CHECK_M(data, "channel_id") &&
+					CHECK_M(data, "message_id"))
 				{
-					if (CHECK_M(data, "emoji") &&
-						CHECK_M(data, "user_id") &&
-						CHECK_M(data, "channel_id") &&
-						CHECK_M(data, "message_id"))
+					Snowflake userId = data["user_id"].get<std::string>();
+					Snowflake channelId = data["channel_id"].get<std::string>();
+					Snowflake messageId = data["message_id"].get<std::string>();
+
+					DiscordReactionEventInfo info;
+					info.Client = this;
+					info.Emoji = Ptr<DiscordEmoji>(new DiscordEmoji(data["emoji"]));
+
+					if (CHECK_M(data, "guild_id"))
 					{
-						Snowflake userId = data["user_id"].get<std::string>();
-						Snowflake channelId = data["channel_id"].get<std::string>();
-						Snowflake messageId = data["message_id"].get<std::string>();
+						info.Guild = GetGuildById(data["guild_id"].get<std::string>());
+					}
 
-						DiscordReactionEventInfo info;
-						info.Client = this;
+					Json userJson;
+					Json messageJson;
 
-						if (CHECK_M(data, "guild_id"))
-						{
-							info.Guild = GetGuildById(data["guild_id"].get<std::string>());
-						}
+					if ((info.User = GetUserById(userId)) &&
+						DiscordRestAPI::Get("/channels/" + channelId.GetValueString() + "/messages/" + messageId.GetValueString(), &messageJson))
+					{
+						info.Message = Ptr<DiscordMessage>(new DiscordMessage(this, messageJson));
 
-						info.Emoji = Ptr<DiscordEmoji>(new DiscordEmoji(data["emoji"]));
+						InteractivityService.InvokeIncomingReaction(info.Message, userId, *info.Emoji);
 
-						Json userJson;
-						Json messageJson;
-
-						if ((info.User = GetUserById(userId)) &&
-							DiscordRestAPI::Get("/channels/" + channelId.GetValueString() + "/messages/" + messageId.GetValueString(), &messageJson))
-						{
-							info.User = Ptr<DiscordUser>(new DiscordUser(userJson));
-							info.Message = Ptr<DiscordMessage>(new DiscordMessage(this, messageJson));
-
+						if (ReactionAddedCallback)
 							ReactionAddedCallback(info);
-						}
 					}
 				}
 			}

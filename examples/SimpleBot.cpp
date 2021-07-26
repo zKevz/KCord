@@ -9,32 +9,31 @@ void OnRepeatCommand(Discord::DiscordCommandContext* context)
     
     auto predicate = [&](Discord::DiscordInteractivityPredicate* p)
     {
-        return p->AuthorId == context->GetMsg()->GetAuthor()->GetId() && p->ChannelId == context->GetChannel()->GetId();
+        return p->AuthorId == context->GetMsg()->GetAuthor()->GetId() && 
+               p->ChannelId == context->GetChannel()->GetId();
     };
 
-    auto result = context->WaitForMessage(predicate, 10s);
+    auto result = context->GetInteractivity()->WaitForMessage(predicate, 10s);
 
     if (result.IsSuccess)
     {
         context->GetChannel()->Send("You said " + result.Message->GetContent() + "!");
-        context->GetChannel()->Send("What is 1 + 1 ? You have 10 seconds");
 
-        auto answer = context->WaitForMessage(predicate, 10s);
+        auto message = context->GetChannel()->Send("React this pls.. You have 10 seconds");
+
+        auto answer = context->GetInteractivity()->WaitForReaction([&](Discord::DiscordInteractivityPredicate* predicate)
+        {
+            return predicate->AuthorId == context->GetMsg()->GetAuthor()->GetId() &&
+                   predicate->MessageId == message->GetId();
+        }, 10s);
 
         if (answer.IsSuccess)
         {
-            if (answer.Message->GetContent() == "2")
-            {
-                context->GetChannel()->Send("Correct!");
-            }
-            else
-            {
-                context->GetChannel()->Send("lol dumbass");
-            }
+            context->GetChannel()->Send("Thanks!!");
         }
         else
         {
-            context->GetChannel()->Send("You didn't answer in time!");
+            context->GetChannel()->Send("You didn't react in time!");
         }
     }
     else
@@ -126,17 +125,12 @@ void OnMessage(const Discord::DiscordMessageEventInfo& info)
     Discord::DiscordClient* client = info.GetClient();
 
     Ptr<Discord::DiscordMessage> msg     = info.GetMsg();
-    Ptr<Discord::DiscordUser>    user    = msg->GetAuthor();
     Ptr<Discord::DiscordGuild>   guild   = info.GetGuild();
+    Ptr<Discord::DiscordUser>    user    = msg->GetAuthor();
     Ptr<Discord::DiscordChannel> channel = msg->GetChannel();
 
     if (user->IsBot())
         return;
-
-    if (user->IsDiscordCertifiedModerator())
-    {
-        std::cout << "omg!\n";
-    }
 
     client->InvokeCommand(msg);
 }

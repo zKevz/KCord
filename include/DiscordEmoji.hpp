@@ -44,6 +44,18 @@ namespace Discord
 		std::string GetString() const { return Id.GetValue() ? Name + ":" + Id.GetValueString() : Name;  }
 
 		DiscordUser& GetUser() { return User; }
+		
+		bool operator==(const DiscordEmoji& other) const
+		{
+			if (Id.GetValue())
+				return Id == other.Id;
+			return Name == other.Name;
+		}
+
+		bool operator!=(const DiscordEmoji& other) const
+		{
+			return !(operator==(other));
+		}
 
 	private:
 		Snowflake Id;
@@ -63,5 +75,6 @@ namespace Discord
 		friend class DiscordGuild;
 		friend class DiscordClient;
 		friend class DiscordMessageReaction;
+		friend class DiscordInteractivityPredicate;
 	};
 }

@@ -21,12 +21,12 @@ void OnMessage(const Discord::DiscordMessageEventInfo& info)
     if (user->IsBot())
         return;
 
-    client->InvokeCommand(msg);
+    info.GetClient()->InvokeCommand(msg);
 }
 
-void OnPingCommand(const Discord::DiscordCommandContext& context)
+void OnPingCommand(Discord::DiscordCommandContext* context)
 {
-    context.GetChannel()->Send("Pong!");
+    context->GetChannel()->Send("Pong!");
 }
 
 int main()
@@ -68,4 +68,4 @@ This library is not done yet, and there is plenty features to add, such as:
 # Question?
 Please join this discord server to ask questions related to this library
 
-[![KCord Discord Server](https://discord.com/api/guilds/868134117965955162/embed.png?style=banner4)](https://discord.gg/YQg8x29MPw)
+[![KCord Discord Server](https://discord.com/api/guilds/868134117965955162/embed.png?style=banner3)](https://discord.gg/YQg8x29MPw)

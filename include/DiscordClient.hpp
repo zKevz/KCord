@@ -1,6 +1,7 @@
 #pragma once
 #pragma warning(disable : 4267)
 #define _CRT_SECURE_NO_WARNINGS
+#define KCORD_SHOW_REST_API_MESSAGE
 
 #include "Json.hpp"
 #include "DiscordGuild.hpp"
@@ -60,6 +61,7 @@ namespace Discord
 
 		Ptr<DiscordUser> GetUserById(Snowflake id);
 		Ptr<DiscordGuild> GetGuildById(Snowflake id);
+		Ptr<DiscordChannel> GetChannel(Snowflake id);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(Snowflake id);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(const DiscordUser& user);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(const Ptr<DiscordUser> user);

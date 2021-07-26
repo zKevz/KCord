@@ -24,6 +24,7 @@ namespace Discord
 			params.Message = ptr->Message;
 			params.Channel = ptr->Message->GetChannel();
 			params.Parameters = parameters;
+			params.InteractivityService = &ptr->Client->GetInteractivityService();
 
 			if (params.Guild)
 			{
@@ -100,8 +101,39 @@ namespace Discord
 		}
 	}
 
-	DiscordInteractivityResult DiscordCommandContext::WaitForMessage(const std::function<bool(DiscordInteractivityPredicate*)>& predicate, DiscordTimeDuration duration)
+	void DiscordCommandContext::Reply(const DiscordEmbed& embed)
 	{
-		return GetClient()->GetInteractivityService().WaitForMessage(predicate, duration);
+		Reply("", false, embed);
+	}
+
+	void DiscordCommandContext::Reply(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed)
+	{
+		if (auto channel = GetChannel())
+		{
+			channel->Send(msg, tts, embed);
+		}
+	}
+
+	void DiscordCommandContext::ReplyAndDeleteAfter(const DiscordEmbed& embed, DiscordTimeDuration duration)
+	{
+		ReplyAndDeleteAfter("", false, embed, duration);
+	}
+	
+	void DiscordCommandContext::ReplyAndDeleteAfter(const std::string& msg, bool tts, DiscordTimeDuration duration)
+	{
+		ReplyAndDeleteAfter(msg, tts, {}, duration);
+	}
+
+	void DiscordCommandContext::ReplyAndDeleteAfter(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed, DiscordTimeDuration duration)
+	{
+		if (auto channel = GetChannel())
+		{
+			static auto Callback = [](std::shared_ptr<DiscordChannel> ch, std::shared_ptr<DiscordMessage> ptr, DiscordTimeDuration duration)
+			{
+				std::this_thread::sleep_for(duration - std::chrono::seconds(2));
+				ch->DeleteMessage(ptr);
+			};
+			Callback(channel, channel->Send(msg, tts, embed), duration);
+		}
 	}
 }

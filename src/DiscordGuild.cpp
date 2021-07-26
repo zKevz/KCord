@@ -221,7 +221,6 @@ namespace Discord
         }
 
         auto end = std::chrono::high_resolution_clock::now();
-        std::cout << "GUILD_CREATE took " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << " microseconds\n";
     }
 
     Ptr<DiscordRole> DiscordGuild::GetRoleById(Snowflake id) const

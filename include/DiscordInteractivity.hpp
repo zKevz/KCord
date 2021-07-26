@@ -1,9 +1,10 @@
 #pragma once
+#include <atomic>
 #include <functional>
 
 #include "Json.hpp"
+#include "DiscordEmoji.hpp"
 #include "DiscordMessage.hpp"
-#include <atomic>
 
 namespace Discord
 {
@@ -11,6 +12,8 @@ namespace Discord
 	{
 		Snowflake AuthorId;
 		Snowflake ChannelId;
+		Snowflake MessageId;
+		DiscordEmoji Emoji;
 	};
 
 	class DiscordInteractivityResult
@@ -30,11 +33,20 @@ namespace Discord
 	class DiscordInteractivityService
 	{
 	public:
-		void Invoke(Ptr<DiscordMessage> message);
+		void InvokeIncomingMessage(Ptr<DiscordMessage> message);
+		void InvokeIncomingReaction(Ptr<DiscordMessage> message, Snowflake authorId, const DiscordEmoji& emoji);
 
-		DiscordInteractivityResult WaitForMessage(std::function<bool(DiscordInteractivityPredicate*)> predicate, DiscordTimeDuration duration);
+		DiscordInteractivityResult WaitForMessage(DiscordTimeDuration duration = std::chrono::seconds(0));
+		DiscordInteractivityResult WaitForMessage(std::function<bool(DiscordInteractivityPredicate*)> predicate, DiscordTimeDuration duration = std::chrono::seconds(0));
 
+		DiscordInteractivityResult WaitForReaction(DiscordTimeDuration duration = std::chrono::seconds(0));
+		DiscordInteractivityResult WaitForReaction(std::function<bool(DiscordInteractivityPredicate*)> predicate, DiscordTimeDuration duration = std::chrono::seconds(0));
 	private:
-		std::map<std::function<bool(DiscordInteractivityPredicate*)>*, Ptr<DiscordInteractivityResult>> Functions;
+		using DiscordInteractivityMap = std::map<std::function<bool(DiscordInteractivityPredicate*)>*, Ptr<DiscordInteractivityResult>>;
+
+		DiscordInteractivityResult WaitIncoming(DiscordInteractivityMap& map, std::function<bool(DiscordInteractivityPredicate*)> predicate, DiscordTimeDuration duration);
+
+		DiscordInteractivityMap IncomingMessageFunctions;
+		DiscordInteractivityMap IncomingReactionFunctions;
 	};
 }

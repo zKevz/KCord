@@ -237,9 +237,17 @@ namespace Discord
 			}
 		}
 
-		DiscordInteractivityResult WaitForMessage(const std::function<bool(DiscordInteractivityPredicate*)>& predicate, DiscordTimeDuration duration);
+		DiscordInteractivityService* GetInteractivity() { return InteractivityService; }
+
+		void Reply(const DiscordEmbed& embed);
+		void Reply(const std::string& msg = "", bool tts = false, std::optional<DiscordEmbed> embed = {});
+
+		void ReplyAndDeleteAfter(const DiscordEmbed& embed, DiscordTimeDuration duration = std::chrono::seconds(0));
+		void ReplyAndDeleteAfter(const std::string& msg, bool tts = false, DiscordTimeDuration duration = std::chrono::seconds(0));
+		void ReplyAndDeleteAfter(const std::string& msg, bool tts = false, std::optional<DiscordEmbed> embed = {}, DiscordTimeDuration duration = std::chrono::seconds(0));
 	private:
 		std::vector<std::string> Parameters;
+		DiscordInteractivityService* InteractivityService;
 
 		friend class DiscordCommandService;
 	};

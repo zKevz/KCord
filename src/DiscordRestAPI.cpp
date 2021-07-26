@@ -38,7 +38,7 @@ namespace Discord
 				response.status_code != 201 &&
 				response.status_code != 204)
 			{
-#ifdef _DEBUG
+#ifdef KCORD_SHOW_REST_API_MESSAGE
 				std::cout << "(" << path << ") Rest API Get error (" << response.status_code << ") (" << response.text << ")\n";
 #endif
 				return false;
