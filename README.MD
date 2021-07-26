@@ -5,11 +5,36 @@ It is designed to be as fast as possible, low memory, and reliable.
 
 # Requirement
 To use this library, you would need to install these libraries:
-- [Boost](https://www.boost.org/) (1.74 is default version, you should change it if you have different version.)
+- [Boost](https://www.boost.org/)
 - [OpenSSL](https://www.openssl.org/)
 - [cpr](https://github.com/whoshuu/cpr)
 - [websocketpp](https://github.com/zaphoyd/websocketpp)
 - [nlohmann-json](https://github.com/nlohmann/json)
+
+# Building
+Cloning from repository:
+
+```cmd
+git clone https://github.com/zKevz/KCord
+```
+
+Or you can add submodule
+
+```cmd
+git submodule add https://github.com/zKevz/KCord
+```
+
+Example `CMakeLists.txt` :
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(ProjectName DESCRIPTION "Description" VERSION 0.1)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC KCord ${CMAKE_THREAD_LIBS_INIT})
+```
 
 # Documentation
 You can see the documentation in [documentation tree](https://github.com/zKevz/KCord/tree/main/documentation)
