@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
 find_package(boost REQUIRED COMPONENTS filesystem system thread regex)
+find_package(Threads REQUIRED)
 
 include(FetchContent)
 
@@ -12,3 +13,5 @@ FetchContent_MakeAvailable(cpr)
 
 FetchContent_Declare(json GIT_REPOSITORY https://github.com/nlohmann/json.git GIT_TAG v3.7.3)
 FetchContent_MakeAvailable(json)
+
+add_subdirectory(deps/websocketpp)

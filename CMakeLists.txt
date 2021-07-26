@@ -6,8 +6,14 @@ set(CMAKE_C_STANDARD 11)
 set(CPR_BUILD_TESTS OFF)
 set(JSON_BuildTests OFF)
 
+set(TESTING CACHE INTERNAL ON)
+
 add_subdirectory(src)
 add_subdirectory(vendor)
 add_subdirectory(include)
+
+if (TESTING)
+	add_subdirectory(examples)
+endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE cpr nlohmann_json websocketpp ${CMAKE_THREAD_LIBS_INIT})
