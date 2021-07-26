@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
-project(KCord DESCRIPTION "C++ Discord API" VERSION 0.1)
+project(KCord DESCRIPTION "C++ Discord API" VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 set(CPR_BUILD_TESTS OFF)
 set(JSON_BuildTests OFF)
 
-set(TESTING CACHE INTERNAL ON)
+set(TESTING OFF)
 
 find_package(cpr REQUIRED)
 find_package(Boost 1.74 REQUIRED COMPONENTS random system thread regex)

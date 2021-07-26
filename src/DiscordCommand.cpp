@@ -1,5 +1,6 @@
 #include "DiscordCommand.hpp"
 #include "DiscordUtils.hpp"
+#include "DiscordClient.hpp"
 
 namespace Discord
 {
@@ -33,7 +34,7 @@ namespace Discord
 
 					if (params.Member)
 					{
-						if (iterator->second.RequirePermission.has_value())
+						if (iterator->second.RequirePermission.has_value() && iterator->second.RequirePermission.value())
 						{
 							bool success = false;
 
@@ -55,7 +56,7 @@ namespace Discord
 								return;
 						}
 
-						if (iterator->second.RequireRoles.has_value())
+						if (iterator->second.RequireRoles.has_value() && iterator->second.RequireRoles.value().size())
 						{
 							auto predicate = [&](const std::string& name) -> bool
 							{
@@ -95,7 +96,12 @@ namespace Discord
 				}
 			}
 
-			iterator->second.Callback(params);
+			iterator->second.Callback(&params);
 		}
+	}
+
+	DiscordInteractivityResult DiscordCommandContext::WaitForMessage(const std::function<bool(DiscordInteractivityPredicate*)>& predicate, DiscordTimeDuration duration)
+	{
+		return GetClient()->GetInteractivityService().WaitForMessage(predicate, duration);
 	}
 }

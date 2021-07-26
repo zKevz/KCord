@@ -11,12 +11,10 @@
 #include "DiscordWebSocket.hpp"
 #include "DiscordEventStruct.hpp"
 #include "DiscordClientConfig.hpp"
+#include "DiscordInteractivity.hpp"
 
 namespace Discord
 {
-	using DiscordClock = std::chrono::high_resolution_clock;
-	using DiscordTimepoint = DiscordClock::time_point;
-
 	using Callback = std::function<void()>;
 	using GuildCallback = std::function<void(const DiscordEventInfo&)>;
 	using MessageCallback = std::function<void(const DiscordMessageEventInfo&)>;
@@ -114,6 +112,9 @@ namespace Discord
 
 		std::map<Snowflake, Ptr<DiscordGuild>>& GetGuilds() { return Guilds; }
 		const std::map<Snowflake, Ptr<DiscordGuild>>& GetGuilds() const { return Guilds; }
+
+		DiscordCommandService& GetCommandService() { return CommandService; }
+		DiscordInteractivityService& GetInteractivityService() { return InteractivityService; }
 	private:
 		void Send(const std::string& msg);
 		void Reconnect();
@@ -125,9 +126,10 @@ namespace Discord
 		void OnMessageReceived(std::string msg);
 		void OnWebsocketClosed(short code, const std::string& reason);
 
-		void OnDefaultHelpCommand(const Discord::DiscordCommandContext& context);
+		void OnDefaultHelpCommand(Discord::DiscordCommandContext* context);
 
 		DiscordCommandService CommandService;
+		DiscordInteractivityService InteractivityService;
 
 		Callback ReadyCallback;
 

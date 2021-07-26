@@ -6,6 +6,7 @@
 
 #include "DiscordUtils.hpp"
 #include "DiscordEventStruct.hpp"
+#include "DiscordInteractivity.hpp"
 
 namespace Discord
 {
@@ -235,22 +236,24 @@ namespace Discord
 				throw "Invalid template type";
 			}
 		}
+
+		DiscordInteractivityResult WaitForMessage(const std::function<bool(DiscordInteractivityPredicate*)>& predicate, DiscordTimeDuration duration);
 	private:
 		std::vector<std::string> Parameters;
 
 		friend class DiscordCommandService;
 	};
 
-	using DiscordCommandCallback = std::function<void(const DiscordCommandContext&)>;
+	using DiscordCommandCallback = std::function<void(DiscordCommandContext*)>;
 
 	class DiscordCommandInfo
 	{
 	public:
 		DiscordRoleTargetType RoleTarget = DiscordRoleTargetType::ANY;
 
-		std::optional<int64_t> RequirePermission;
-		std::optional<std::string> Description;
-		std::optional<std::vector<std::string>> RequireRoles;
+		std::optional<int64_t> RequirePermission = {};
+		std::optional<std::string> Description = {};
+		std::optional<std::vector<std::string>> RequireRoles = {};
 	private:
 		DiscordCommandCallback Callback;
 

@@ -1,8 +1,13 @@
 #pragma once
 #include <memory>
+#include <chrono>
 
 template<typename T>
 using Ptr = std::shared_ptr<T>;
+
+using DiscordClock = std::chrono::high_resolution_clock;
+using DiscordTimepoint = DiscordClock::time_point;
+using DiscordTimeDuration = DiscordClock::duration;
 
 #ifdef _RAPIDJSON
 #define CHECK(name) document.HasMember(name) && !document[name].IsNull()

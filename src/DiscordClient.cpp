@@ -2,7 +2,7 @@
 
 namespace Discord
 {
-	void DiscordClient::OnDefaultHelpCommand(const Discord::DiscordCommandContext& context)
+	void DiscordClient::OnDefaultHelpCommand(Discord::DiscordCommandContext* context)
 	{
 		DiscordEmbed embed;
 		embed.SetAuthor("Help", "", GetAvatarUrl())
@@ -22,7 +22,7 @@ namespace Discord
 			embed.AddField(command.first, str);
 		}
 
-		context.GetChannel()->Send(embed);
+		context->GetChannel()->Send(embed);
 	}
 
 	DiscordClient::DiscordClient(const DiscordClientConfig& config) : Config(config)
@@ -47,7 +47,7 @@ namespace Discord
 #endif
 		});
 
-		RegisterCommand("help", [&](const Discord::DiscordCommandContext& context) { OnDefaultHelpCommand(context); });
+		RegisterCommand("help", [&](Discord::DiscordCommandContext* context) { OnDefaultHelpCommand(context); });
 	}
 
 	DiscordClient::~DiscordClient()
@@ -875,6 +875,8 @@ namespace Discord
 					{
 						return;
 					}
+
+					InteractivityService.Invoke(message);
 
 					DiscordMessageEventInfo info;
 					info.Guild = message->Guild;

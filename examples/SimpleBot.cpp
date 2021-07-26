@@ -1,14 +1,56 @@
 ﻿#include <iostream>
-#include "DiscordClient.hpp"
+#include <DiscordClient.hpp>
 
-void OnSumCommand(const Discord::DiscordCommandContext& context)
+using namespace std::chrono_literals;
+
+void OnRepeatCommand(Discord::DiscordCommandContext* context)
 {
-    auto channel = context.GetChannel();
+    context->GetChannel()->Send("Say any word!");
+    
+    auto predicate = [&](Discord::DiscordInteractivityPredicate* p)
+    {
+        return p->AuthorId == context->GetMsg()->GetAuthor()->GetId() && p->ChannelId == context->GetChannel()->GetId();
+    };
+
+    auto result = context->WaitForMessage(predicate, 10s);
+
+    if (result.IsSuccess)
+    {
+        context->GetChannel()->Send("You said " + result.Message->GetContent() + "!");
+        context->GetChannel()->Send("What is 1 + 1 ? You have 10 seconds");
+
+        auto answer = context->WaitForMessage(predicate, 10s);
+
+        if (answer.IsSuccess)
+        {
+            if (answer.Message->GetContent() == "2")
+            {
+                context->GetChannel()->Send("Correct!");
+            }
+            else
+            {
+                context->GetChannel()->Send("lol dumbass");
+            }
+        }
+        else
+        {
+            context->GetChannel()->Send("You didn't answer in time!");
+        }
+    }
+    else
+    {
+        context->GetChannel()->Send("failed");
+    }
+}
+
+void OnSumCommand(Discord::DiscordCommandContext* context)
+{
+    auto channel = context->GetChannel();
 
     int64_t num1, num2;
 
-    if (context.GetArgument(1, &num1) &&
-        context.GetArgument(2, &num2))
+    if (context->GetArgument(1, &num1) &&
+        context->GetArgument(2, &num2))
     {
         /*
         Discord::DiscordEmbed embed;
@@ -31,14 +73,14 @@ void OnSumCommand(const Discord::DiscordCommandContext& context)
     }
 }
 
-void OnEditChannelCommand(const Discord::DiscordCommandContext& context)
+void OnEditChannelCommand(Discord::DiscordCommandContext* context)
 {
     std::string name;
 
-    Ptr<Discord::DiscordGuild> guild = context.GetGuild();
-    Ptr<Discord::DiscordChannel> channel = context.GetChannel();
+    Ptr<Discord::DiscordGuild> guild = context->GetGuild();
+    Ptr<Discord::DiscordChannel> channel = context->GetChannel();
 
-    if (context.GetArgument(1, &name))
+    if (context->GetArgument(1, &name))
     {
         if (auto textChannel = std::dynamic_pointer_cast<Discord::DiscordTextChannel>(channel))
         {
@@ -62,14 +104,21 @@ void OnEditChannelCommand(const Discord::DiscordCommandContext& context)
     }
 }
 
-void OnReactMessageCommand(const Discord::DiscordCommandContext& context)
+void OnReactMessageCommand(Discord::DiscordCommandContext* context)
 {
-    Ptr<Discord::DiscordChannel> channel = context.GetChannel();
-    Ptr<Discord::DiscordMessage> message = context.GetMsg();
-    Ptr<Discord::DiscordGuildMember> member = context.GetMember();
+    try
+    {
+        Ptr<Discord::DiscordChannel> channel = context->GetChannel();
+        Ptr<Discord::DiscordMessage> message = context->GetMsg();
+        Ptr<Discord::DiscordGuildMember> member = context->GetMember();
 
-    channel->AddMessageReaction(channel->Send("lel"), Discord::DiscordEmoji::FromUnicode(u8"😂"));
-    channel->AddMessageReaction(channel->SendFile("test.txt"), Discord::DiscordEmoji::FromUnicode(u8"😂"));
+        channel->AddMessageReaction(channel->Send("lel"), Discord::DiscordEmoji::FromUnicode(u8"😂"));
+        channel->AddMessageReaction(channel->SendFile("test.txt"), Discord::DiscordEmoji::FromUnicode(u8"😂"));
+    }
+    catch (const std::exception& ex)
+    {
+        std::cout << ex.what() << "\n";
+    }
 }
 
 void OnMessage(const Discord::DiscordMessageEventInfo& info)
@@ -99,8 +148,12 @@ void OnReady()
 
 int main(int argc, char* argv[]) 
 {
+    std::ifstream fs("token.txt");
+    std::string token;
+    fs >> token;
+
     Discord::DiscordClientConfig config;
-    config.Token = "ur-token";
+    config.Token = token; // "ur-token";
     config.Prefix = "&";
     config.Threshold = 250;
     config.EnableDM = false;
@@ -129,8 +182,13 @@ int main(int argc, char* argv[])
     /********************************************************/
 
     /********************************************************/
-     /*                      METHOD 3                        */
+    /*                      METHOD 3                        */
     client.RegisterCommand("react", OnReactMessageCommand);
+    /********************************************************/
+
+    /********************************************************/
+    /*                 INTERACTIVITY                        */
+    client.RegisterCommand("repeat", OnRepeatCommand);
     /********************************************************/
 
     Discord::DiscordGatewayPresence presence;
