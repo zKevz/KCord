@@ -66,4 +66,4 @@ This library is not done yet, and there is plenty features to add, such as:
 # Question?
 Please join this discord server to ask questions related to this library
 
-[![KCord Discord Server](https://discord.com/api/guilds/734711245697187881/embed.png?style=banner1)](https://discord.gg/YQg8x29MPw)
+[![KCord Discord Server](https://discord.com/api/guilds/868134117965955162/embed.png?style=banner4)](https://discord.gg/YQg8x29MPw)
