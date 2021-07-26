@@ -1,6 +1,8 @@
 # KCord
 C++ Unofficial wrapper for the Discord API
 
+[![KCord Discord Server](https://discord.com/api/guilds/868134117965955162/embed.png?style=shield)](https://discord.gg/YQg8x29MPw)
+
 # Documentation
 You can see the documentation in [documentation tree](https://github.com/zKevz/KCord/tree/main/documentation)
 
