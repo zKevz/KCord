@@ -101,17 +101,21 @@ namespace Discord
 		}
 	}
 
-	void DiscordCommandContext::Reply(const DiscordEmbed& embed)
+	Ptr<DiscordMessage> DiscordCommandContext::Reply(const DiscordEmbed& embed)
 	{
-		Reply("", false, embed);
+		return Reply("", false, embed);
 	}
 
-	void DiscordCommandContext::Reply(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed)
+	Ptr<DiscordMessage> DiscordCommandContext::Reply(const std::string& msg, bool tts, std::optional<DiscordEmbed> embed)
 	{
+		Ptr<DiscordMessage> ptr;
+
 		if (auto channel = GetChannel())
 		{
-			channel->Send(msg, tts, embed);
+			ptr = channel->Send(msg, tts, embed);
 		}
+
+		return ptr;
 	}
 
 	void DiscordCommandContext::ReplyAndDeleteAfter(const DiscordEmbed& embed, DiscordTimeDuration duration)

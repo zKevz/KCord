@@ -5,7 +5,7 @@ using namespace std::chrono_literals;
 
 void OnRepeatCommand(Discord::DiscordCommandContext* context)
 {
-    context->GetChannel()->Send("Say any word!");
+    context->Reply("Say any word!");
     
     auto predicate = [&](Discord::DiscordInteractivityPredicate* p)
     {
@@ -17,9 +17,9 @@ void OnRepeatCommand(Discord::DiscordCommandContext* context)
 
     if (result.IsSuccess)
     {
-        context->GetChannel()->Send("You said " + result.Message->GetContent() + "!");
+        context->Reply("You said " + result.Message->GetContent() + "!");
 
-        auto message = context->GetChannel()->Send("React this pls.. You have 10 seconds");
+        auto message = context->Reply("React this pls.. You have 10 seconds");
 
         auto answer = context->GetInteractivity()->WaitForReaction([&](Discord::DiscordInteractivityPredicate* predicate)
         {
@@ -29,16 +29,16 @@ void OnRepeatCommand(Discord::DiscordCommandContext* context)
 
         if (answer.IsSuccess)
         {
-            context->GetChannel()->Send("Thanks!!");
+            context->Reply("Thanks!!");
         }
         else
         {
-            context->GetChannel()->Send("You didn't react in time!");
+            context->Reply("You didn't react in time!");
         }
     }
     else
     {
-        context->GetChannel()->Send("failed");
+        context->Reply("failed");
     }
 }
 
@@ -148,9 +148,10 @@ int main(int argc, char* argv[])
 
     Discord::DiscordClientConfig config;
     config.Token = token; // "ur-token";
-    config.Prefix = "&";
+    config.Prefix = "!";
     config.Threshold = 250;
     config.EnableDM = false;
+    config.EnableMentionPrefix = true;
     config.PrefixCaseSensitive = false;
 
     Discord::DiscordClient client(config);

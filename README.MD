@@ -56,7 +56,7 @@ This library is not done yet, and there is plenty features to add, such as:
 
 - More framework
 
-However, this library provides you with cool things such as Interactivity.
+However, this library provides you with Interactivity.
 
 ```cpp
 channel->Send("Say any word!");
@@ -68,10 +68,12 @@ auto predicate = [&](Discord::DiscordInteractivityPredicate* p)
 };
 
 auto result = context->GetInteractivity()->WaitForMessage(predicate, 10s);
+// Wait for message whose author id is `author->GetId()` and channel id is `channel->GetId()`
 
 if (result.IsSuccess)
 {
     context->Reply("You said " + result.Message->GetContent() + "!");
+    // Send the result
 }
 ```
 

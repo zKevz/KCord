@@ -125,12 +125,57 @@ namespace Discord
 			}
 		}
 
-		if (message->HasPrefix(Config.Prefix, Config.PrefixCaseSensitive))
+		bool success = message->HasPrefix(Config.Prefix, Config.PrefixCaseSensitive);
+
+		std::string prefix = Config.Prefix;
+
+		if (!success && Config.EnableMentionPrefix)
+		{
+			auto vec = DiscordUtils::SplitString(message->Content, " ");
+
+			if (!vec.empty())
+			{
+				auto param = vec[0];
+
+				prefix = param;
+
+				if (param.size() >= 5)
+				{
+					if (param.back() == '>')
+					{
+						size_t offset = 3;
+
+						if (param.find("<@!") != 0)
+						{
+							if (param.find("<@") != 0)
+							{
+								offset = -1;
+							}
+							offset = 2;
+						}
+
+						if (offset != -1)
+						{
+							uint64_t id = 0;
+
+							std::string str = param.substr(offset, param.size() - offset - 1);
+
+							if (DiscordUtils::ToUInt64(str, &id))
+							{
+								success = id == Id.GetValue();
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (success)
 		{
 			Ptr<DiscordCommandService::DiscordCommandServiceContainer> ptr(new DiscordCommandService::DiscordCommandServiceContainer);
 			ptr->Client = this;
 			ptr->Message = message;
-			ptr->Content = message->Content.substr(Config.Prefix.size());
+			ptr->Content = message->Content.substr(prefix.size());
 
 			CommandService.Process(ptr);
 		}

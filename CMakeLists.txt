@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 set(CPR_BUILD_TESTS OFF)
 set(JSON_BuildTests OFF)
 
-set(TESTING OFF)
+set(TESTING ON)
 
 find_package(cpr REQUIRED)
 find_package(Boost 1.74 REQUIRED COMPONENTS random system thread regex)

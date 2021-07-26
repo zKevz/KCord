@@ -9,8 +9,9 @@ namespace Discord
 		int Intents = DiscordIntents::ALL;
 		int Threshold = 250;
 
-		bool EnableDM = true;
+		bool EnableDM = false;
 		bool PrefixCaseSensitive = true;
+		bool EnableMentionPrefix = false;
 
 		std::string Token;
 		std::string Prefix;
