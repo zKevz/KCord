@@ -284,7 +284,7 @@ namespace Discord
         DiscordRestAPI::Put("/guilds/" + Id.GetValueString() + "/members/" + id.GetValueString(), member.Serialize());
     }
 
-    void DiscordGuild::BanUser(Snowflake id, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
+    void DiscordGuild::BanMember(Snowflake id, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
     {
         Json json;
 
@@ -297,14 +297,14 @@ namespace Discord
         DiscordRestAPI::Put("/guilds/" + Id.GetValueString() + "/bans/" + id.GetValueString(), json);
     }
 
-    void DiscordGuild::BanUser(const DiscordGuildMember& member, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
+    void DiscordGuild::BanMember(const DiscordGuildMember& member, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
     {
-        BanUser(member.Id, reason, deleteMessageDays);
+        BanMember(member.Id, reason, deleteMessageDays);
     }
 
-    void DiscordGuild::BanUser(const Ptr<DiscordGuildMember> member, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
+    void DiscordGuild::BanMember(const Ptr<DiscordGuildMember> member, std::optional<std::string> reason, std::optional<int> deleteMessageDays)
     {
-        BanUser(member->Id, reason, deleteMessageDays);
+        BanMember(member->Id, reason, deleteMessageDays);
     }
 
     void DiscordGuild::KickMember(Snowflake id)
@@ -526,12 +526,32 @@ namespace Discord
         DiscordRestAPI::Patch("/guild/" + Id.GetValueString() + "/emojis/" + id.GetValueString(), edit.Serialize());
     }
 
+    void DiscordGuild::EditEmoji(const DiscordEmoji& emoji, const std::function<void(DiscordEmojiEdit*)>& func)
+    {
+        EditEmoji(emoji.Id, func);
+    }
+
+    void DiscordGuild::EditEmoji(const Ptr<DiscordEmoji> emoji, const std::function<void(DiscordEmojiEdit*)>& func)
+    {
+        EditEmoji(emoji->Id, func);
+    }
+
     void DiscordGuild::DeleteEmoji(Snowflake id)
     {
         if (auto iterator = Emojis.find(id); iterator != Emojis.end())
         {
             DiscordRestAPI::Delete("/guild/" + Id.GetValueString() + "/emojis/" + id.GetValueString());
         }
+    }
+
+    void DiscordGuild::DeleteEmoji(const DiscordEmoji& emoji)
+    {
+        DeleteEmoji(emoji.Id);
+    }
+
+    void DiscordGuild::DeleteEmoji(const Ptr<DiscordEmoji> emoji)
+    {
+        DeleteEmoji(emoji->Id);
     }
 
     Ptr<DiscordEmoji> DiscordGuild::GetEmojiById(Snowflake id) const

@@ -23,6 +23,27 @@
 	- [Unpin Message](#unpin-message)
 	- [Add Recipient](#add-recipient)
 	- [Remove Recipient](#remove-recipient)
+- [Guild Documentation](#guild)
+	- [Create Channel](#create-channel)
+	- [Edit Channel Position](#edit-channel-position)
+	- [Create Emoji](#create-emoji)
+	- [Edit Emoji](#edit-emoji)
+	- [Delete Emoji](#delete-emoji)
+	- [Add Member](#add-member)
+	- [Edit Member](#edit-member)
+	- [Edit Current Nickname](#edit-current-nickname)
+	- [Add Role To Member](#add-member-role)
+	- [Remove Role From Member](#remove-member-role)
+	- [Remove Member](#remove-member)
+	- [Get Banned User List](#get-bans)
+	- [Get Banned User](#get-ban)
+	- [Ban Member](#ban-member)
+	- [Kick Member](#kick-member)
+	- [Unban User](#unban-user)
+	- [Create Role](#create-role)
+	- [Edit Role Position](#edit-role-position)
+	- [Edit Role](#edit-role)
+	- [Delete role](#delete-role)
 
 # Channels
 - [Editing Channel](#editing-channel)
@@ -395,7 +416,7 @@ Example:
 channel->DeletePermission(12345678911);
 ```
 
-# Get Pinned Messages
+## Get Pinned Messages
 To get pinned messages you would need to call `GetPinnedMessages` function
 
 Example:
@@ -404,19 +425,19 @@ Example:
 auto pinnedMessages = channel->GetPinnedMessages();
 ```
 
-# Pin Message
+## Pin Message
 To pin message you would need to call `PinMessage` function
 
 This function has many overloads but it leads to:
 - Message => Can be as id (Snowflake) or DiscordMessage object
 
-# Unpin Message
+## Unpin Message
 To unpin message you would need to call `UnpinMessage` function
 
 This function has many overloads but it leads to:
 - Message => Can be as id (Snowflake) or DiscordMessage object
 
-# Add Recipient
+## Add Recipient
 This will only work in DM / Group DM channels
 
 To add recipient you would need to call `AddRecipient` function
@@ -432,8 +453,7 @@ pDMChannel->AddRecipient(user, "token");
 groupDMChannel->AddRecipient(user, "token");
 ```
 
-# Remove Recipient
-
+## Remove Recipient
 This will only work in DM / Group DM channels
 
 To add recipient you would need to call `RemoveRecipient` function
@@ -445,4 +465,283 @@ Example:
 
 ```cpp
 pDMChannel->RemoveRecipient(69420);
+```
+
+# Guild
+- [Create Channel](#create-channel)
+- [Edit Channel Position](#edit-channel-position)
+- [Create Emoji](#create-emoji)
+- [Edit Emoji](#edit-emoji)
+- [Delete Emoji](#delete-emoji)
+- [Add Member](#add-member)
+- [Edit Member](#edit-member)
+- [Edit Current Nickname](#edit-current-nickname)
+- [Add Role To Member](#add-member-role)
+- [Remove Role From Member](#remove-member-role)
+- [Remove Member](#remove-member)
+- [Get Banned User List](#get-bans)
+- [Get Banned User](#get-ban)
+- [Ban Member](#ban-member)
+- [Kick Member](#kick-member)
+- [Unban User](#unban-user)
+- [Create Role](#create-role)
+- [Edit Role Position](#edit-role-position)
+- [Edit Role](#edit-role)
+- [Delete role](#delete-role)
+
+## Create Channel
+To create channel, you would need to call `CreateChannel` function and pass a `DiscordChannelCreate` object
+
+Example:
+
+```cpp
+DiscordChannelCreate create;
+create.Name = "channel name";
+create.Topic = "channel topic";
+// u can access more in property that `DiscordChannelCreate` has
+
+guild->CreateChanel(create);
+```
+
+## Edit Channel Position
+To edit channel position, you would need to call `EditChannelPosition` function
+
+This function has 3 overloads which leads to:
+- Channel => Can be as id (Snowflake) or DiscordChannel object
+- Position => Channel position
+- Lock Permission => boolean, syncs the permission overwrites with the new parent, if moving to a new category
+- Parent Id => Id (Snowflake), the new parent ID for the channel that is moved
+
+## Create Emoji
+To create emoji, you would need to call `CreateEmoji` function and pass a `DiscordEmojiCreate` object
+
+Example:
+
+```cpp
+DiscordEmojiCreate create;
+create.Name = "pog";
+create.ImageFilePath = "pog.png";
+
+guild->CreateEmoji(create);
+```
+
+## Edit Emoji
+To edit emoji, you would need to call `EditEmoji` function
+
+This function has 3 overloads which leads to:
+- Emoji => Can be as id (Snowflake) or DiscordEmoji object
+- Lambda (DiscordEmojiEdit) => Lambda
+
+Example:
+
+```cpp
+guild->EditEmoji(198371319327891938, [](Discord::DiscordEmojiEdit* edit)
+{
+	edit->Name = "pog_new_name";
+});
+```
+
+## Delete Emoji
+To delete emoji, you would need to call `DeleteEmoji` function
+
+This function has 3 overloads but it leads to:
+- Emoji => Can be as id (Snowflake) or DiscordEmoji object
+
+Example:
+
+```cpp
+guild->DeleteEmoji(1234512731763872);
+```
+
+## Add Member
+To add member, you would need to call `AddMember` function
+
+This function has 2 parameters:
+- Id => Snowflake, the member's id you want to add
+- Create Object => DiscordGuildMemberCreate, info object
+
+Example:
+
+```cpp
+DiscordGuildMemberCreate create;
+create.AccessToken = "token";
+create.Nickname = "nickname";
+
+guild->AddMember(12345678919839132, create);
+```
+
+## Edit Member
+To edit member, you would need to call `EditMember` function
+
+This function has 3 overloads which leads to:
+- Member => Can be as id (Snowflake) or DiscordGuildMember object
+- Lambda (DiscordGuildMemberEdit) => Lambda
+
+Example:
+
+```cpp
+guild->EditMember(1231987389123, [](Discord::DiscordGuildMemberEdit* edit)
+{
+	edit->Mute = true;
+	edit->Deaf = true;
+	edit->Nickname = "nickname";
+});
+```
+
+## Edit Current Nickname
+To edit current client nickname, you would need to call `EditCurrentNickname` and pass a `nickname` string
+
+Example:
+
+```cpp
+guild->EditCurrentNickname("nickname");
+```
+
+## Add Member Role
+To add role to member, you would need to call `AddMemberRole` function
+
+This function has 3 overloads which leads to:
+- Member => Can be as Id (Snowflake) or DiscordGuildMember object
+- Role Id => Id (Snowflake), the role id
+
+Example:
+
+```cpp
+guild->AddMemberRole(12371681739182, 129371982739817312);
+```
+
+## Remove Member Role
+To remove role from member, you would need to call `RemoveMemberRole` function
+
+This function has 3 overloads which leads to:
+- Member => Can be as Id (Snowflake) or DiscordGuildMember object
+- Role Id => Id (Snowflake), the role id
+
+Example:
+
+```cpp
+guild->RemoveMemberRole(12371681739182, 129371982739817312);
+```
+
+## Remove Member
+To remove member, you would need to call `RemoveMember` function
+
+This function has 3 overloads which leads to:
+- Member => Can be as Id (Snowflake) or DiscordGuildMember object
+
+Example:
+
+```cpp
+guild->RemoveMember(123761632123);
+```
+
+## Get Bans
+To get banned user list, you would need to call `GetBans` function
+
+Example:
+
+```cpp
+auto list = guild->GetBans();
+```
+
+## Get Ban
+To get specified banned user, you would need to call `GetBan` function and pass a `Id`
+
+Example:
+
+```cpp
+auto ban = guild->GetBan(11987391873198371);
+```
+
+## Ban Member
+To ban member, you would need to call `BanMember` function
+
+This function has 3 overloads, but it leads to:
+- Member => Can be as id (Snowflake) or DiscordGuildMember object
+- Reason => Ban reason (string)
+- Delete Message Days => number of days to delete messages for (0-7)
+
+Example:
+
+```cpp
+guild->BanMember(92873198739187381723, "noob", 7);
+```
+
+## Kick Member
+To kick member, you would need to call `KickMember` function
+
+This function has 3 overloads, but it leads to:
+- Member => Can be as id (Snowflake) or DiscordGuildMember object
+
+Example:
+
+```cpp
+guild->KickMember(1273197391837123);
+```
+
+## Unban User
+To unban user, you would need to call `UnbanUser` function
+
+This function has 3 overloads, but it leads to:
+- User => Can be as id (Snowflake) or DiscordUser object
+
+Example:
+
+```cpp
+guild->UnbanUser(1273197391837123);
+```
+
+## Create Role
+To create role, you would need to call `CreateRole` function and pass a `DiscordRoleInfo` object
+
+Example:
+
+```cpp
+DiscordRoleInfo create;
+create.Name = "role-name";
+create.Role = DiscordColor(255, 0, 0); // red
+
+guild->CreateRole(create);
+```
+
+## Edit Role Position
+To edit role position, you would need to call `EditRolePosition` function
+
+This function has 3 overloads which leads to:
+- Role => Can be as id (Snowflake), or DiscordRole object
+- Position => New position
+
+Example:
+
+```cpp
+guild->EditRolePosition(128371283781973, 1);
+```
+
+## Edit Role
+To edit role, you would need to call `EditRole` function
+
+This function has 3 overloads which leads to:
+- Role => Can be as id (Snowflake), or DiscordRole object
+- Lambda (DiscordRoleInfo) => Lambda
+
+Example:
+
+```cpp
+guild->EditRole(118739812938139132, [](Discord::DiscordRoleInfo* edit)
+{
+	edit->Name = "new-name";
+	edit->Color = DiscordColor(0, 0, 255); // blue
+});
+```
+
+## Delete Role
+To delete role, you would need to call `DeleteRole` function
+
+This function has 3 overloads which leads to:
+- Role => Can be as id (Snowflake), or DiscordRole object
+
+Example:
+
+```cpp
+guild->DeleteRole(127319827391283712);
 ```

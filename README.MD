@@ -32,6 +32,8 @@ project(ProjectName DESCRIPTION "Description" VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_subdirectory(KCord)
+
 add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC KCord ${CMAKE_THREAD_LIBS_INIT})
 ```

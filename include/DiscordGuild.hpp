@@ -269,9 +269,9 @@ namespace Discord
 
 		void AddMember(Snowflake id, const DiscordGuildMemberCreate& member);
 
-		void BanUser(Snowflake id, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
-		void BanUser(const DiscordGuildMember& member, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
-		void BanUser(const Ptr<DiscordGuildMember> member, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
+		void BanMember(Snowflake id, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
+		void BanMember(const DiscordGuildMember& member, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
+		void BanMember(const Ptr<DiscordGuildMember> member, std::optional<std::string> reason = {}, std::optional<int> deleteMessageDays = {});
 
 		void KickMember(Snowflake id);
 		void KickMember(const DiscordGuildMember& member);
@@ -318,7 +318,12 @@ namespace Discord
 		void EditChannelPosition(const Ptr<DiscordChannel> channel, int position, std::optional<bool> lockPermissions = {}, std::optional<Snowflake> parentId = {});
 
 		void EditEmoji(Snowflake id, const std::function<void(DiscordEmojiEdit*)>& func);
+		void EditEmoji(const DiscordEmoji& emoji, const std::function<void(DiscordEmojiEdit*)>& func);
+		void EditEmoji(const Ptr<DiscordEmoji> emoji, const std::function<void(DiscordEmojiEdit*)>& func);
+
 		void DeleteEmoji(Snowflake id);
+		void DeleteEmoji(const DiscordEmoji& emoji);
+		void DeleteEmoji(const Ptr<DiscordEmoji> emoji);
 
 		Ptr<DiscordRole> GetRoleById(Snowflake id) const;
 		Ptr<DiscordRole> GetRoleByName(const std::string& name, bool caseSensitive = true) const;
@@ -340,6 +345,7 @@ namespace Discord
 		Ptr<DiscordGuildMember> GetMemberByPredicate(const std::function<bool(Ptr<DiscordGuildMember>)>& predicate);
 
 		std::vector<DiscordGuildBan> GetBans();
+
 		Ptr<DiscordGuildBan> GetBan(Snowflake id);
 		Ptr<DiscordWelcomeScreen> GetWelcomeScreen() const;
 
