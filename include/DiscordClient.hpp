@@ -26,7 +26,7 @@ namespace Discord
 	using GuildMemberCallback = std::function<void(const DiscordMemberEventInfo&)>;
 	using TypingStartCallback = std::function<void(const DiscordTypingStartEventInfo&)>;
 	using GuildChannelCallback = std::function<void(const DiscordChannelEventInfo&)>;
-	using InviteCreatedCallback = std::function<void(const DiscordInviteCreated&)>;
+	using InviteCreatedCallback = std::function<void(const DiscordInviteCreatedEventInfo&)>;
 	using InviteDeletedCallback = std::function<void(const DiscordInviteDeletedEventInfo&)>;
 	
 	enum class DiscordCloseEvent
@@ -52,16 +52,18 @@ namespace Discord
 
 		void Run();
 		void Edit(const std::function<void(DiscordClientEdit*)>& func);
+
 		void LeaveGuild(Snowflake id);
 		void LeaveGuild(const DiscordGuild& guild);
 		void LeaveGuild(const Ptr<DiscordGuild> guild);
+
 		void DeleteGuild(Snowflake id);
 		void DeleteGuild(const DiscordGuild& guild);
 		void DeleteGuild(const Ptr<DiscordGuild> guild);
 
 		Ptr<DiscordUser> GetUserById(Snowflake id);
 		Ptr<DiscordGuild> GetGuildById(Snowflake id);
-		Ptr<DiscordChannel> GetChannel(Snowflake id);
+		Ptr<DiscordChannel> GetChannelById(Snowflake id);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(Snowflake id);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(const DiscordUser& user);
 		Ptr<DiscordDMChannel> GetOrCreateDMChannel(const Ptr<DiscordUser> user);
@@ -75,11 +77,13 @@ namespace Discord
 		void SetPresence(const DiscordGatewayPresence& presence) { Presence = presence; }
 
 		void OnReady(const Callback& callback) { ReadyCallback = callback; }
+
 		void OnTypingStart(const TypingStartCallback& callback) { TypingStartCallback = callback; }
 		void OnPresenceUpdated(const PresenceCallback& callback) { PresenceUpdatedCallback = callback; }
 
 		void OnMessageCreated(const MessageCallback& callback) { MessageCreatedCallback = callback; }
 		void OnMessageUpdated(const MessageCallback& callback) { MessageUpdatedCallback = callback; }
+		void OnMessageDeleted(const GuildChannelCallback& callback) { MessageDeletedCallback = callback; }
 
 		void OnReactionAdded(const ReactionCallback& callback) { ReactionAddedCallback = callback; }
 		void OnReactionRemoved(const ReactionCallback& callback) { ReactionRemovedCallback = callback; }
@@ -141,6 +145,7 @@ namespace Discord
 
 		MessageCallback MessageCreatedCallback;
 		MessageCallback MessageUpdatedCallback;
+		GuildChannelCallback MessageDeletedCallback;
 
 		ReactionCallback ReactionAddedCallback;
 		ReactionCallback ReactionRemovedCallback;

@@ -109,7 +109,7 @@ namespace Discord
 		friend class DiscordPresence;
 		friend class DiscordDMChannel;
 		friend class DiscordGuildMember;
-		friend class DiscordInviteCreated;
+		friend class DiscordInviteCreatedEventInfo;
 		friend class DiscordGroupDMChannel;
 	};
 }

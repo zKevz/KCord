@@ -67,7 +67,7 @@ namespace Discord
 	private:
 		Ptr<DiscordChannel> Channel = nullptr;
 		friend class DiscordClient;
-		friend class DiscordInviteCreated;
+		friend class DiscordInviteCreatedEventInfo;
 		friend class DiscordCommandService;
 	};
 
@@ -80,7 +80,7 @@ namespace Discord
 		friend class DiscordClient;
 	};
 
-	class DiscordInviteCreated : public DiscordEventInfo, public DiscordAbstractChannelEvent
+	class DiscordInviteCreatedEventInfo : public DiscordEventInfo, public DiscordAbstractChannelEvent
 	{
 	public:
 		int Uses = 0;
@@ -96,7 +96,7 @@ namespace Discord
 		DiscordTimestamp CreatedAt;
 		DiscordInviteTargetType TargetType = DiscordInviteTargetType::STREAM;
 
-		DiscordInviteCreated() {}
+		DiscordInviteCreatedEventInfo() {}
 	};
 
 	class DiscordAbstractPresenceEvent

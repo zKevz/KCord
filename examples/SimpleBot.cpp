@@ -158,6 +158,13 @@ int main(int argc, char* argv[])
 
     client.OnReady(OnReady);
     client.OnMessageCreated(OnMessage);
+    client.OnChannelCreated([](const Discord::DiscordChannelEventInfo& info)
+    {
+        if (auto guildChannel = std::dynamic_pointer_cast<Discord::DiscordGuildChannel>(info.GetChannel()))
+        {
+            std::cout << "New channel created with name: " << guildChannel->GetName() << "!\n";
+        }
+    });
 
     /********************************************************/
     /*                      METHOD 1                        */

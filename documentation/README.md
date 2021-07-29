@@ -23,6 +23,7 @@
 	- [Unpin Message](#unpin-message)
 	- [Add Recipient](#add-recipient)
 	- [Remove Recipient](#remove-recipient)
+
 - [Guild Documentation](#guild)
 	- [Create Channel](#create-channel)
 	- [Edit Channel Position](#edit-channel-position)
@@ -44,6 +45,44 @@
 	- [Edit Role Position](#edit-role-position)
 	- [Edit Role](#edit-role)
 	- [Delete role](#delete-role)
+
+- [Client Documentation](#client)
+	- [Leave Guild](#leave-guild)
+	- [Delete Guild](#delete-guild)
+	- [Edit](#edit)
+	- [Get DM Channel](#get-dm-channel)
+
+- [Events](#events)
+	- [OnReady](#onready)
+	- [OnTypingStart](#ontypingstart)
+	- [OnPresenceUpdated](#onpresenceupdated)
+	- [OnMessageCreated](#onmessagecreated)
+	- [OnMessageUpdated](#onmessageupdated)
+	- [OnMessageDeleted](#onmessagedeleted)
+	- [OnReactionAdded](#onreactionadded)
+	- [OnReactionRemoved](#onreactionremoved)
+	- [OnAllReactionRemoved](#onallreactionremoved)
+	- [OnSingleReactionFullyRemoved](#onsinglereactionfullyremoved)
+	- [OnInviteCreated](#oninvitecreated)
+	- [OnInviteDeleted](#oninvitedeleted)
+	- [OnGuildCreated](#onguildcreated)
+	- [OnGuildUpdated](#onguildupdated)
+	- [OnGuildRemoved](#onguildremoved)
+	- [OnEmojiUpdated](#onemojiupdated)
+	- [OnGuildMembersChunk](#onguildmemberschunk)
+	- [OnGuildIntegrationsUpdated](#onguildintegrationsupdated)
+	- [OnUserUpdated](#onuserupdated)
+	- [OnGuildBanAdded](#onguildbanadded)
+	- [OnGuildBanRemoved](#onguildbanremoved)
+	- [OnGuildRoleAdded](#onguildroleadded)
+	- [OnGuildRoleRemoved](#onguildroleremoved)
+	- [OnGuildRoleUpdated](#onguildroleupdated)
+	- [OnGuildMemberAdded](#onguildmemberadded)
+	- [OnGuildMemberRemoved](#onguildmemberremoved)
+	- [OnGuildMemberUpdated](#onguildmemberupdated)
+	- [OnChannelCreated](#onchannelcreated)
+	- [OnChannelUpdated](#onchannelupdated)
+	- [OnChannelRemoved](#onchannelremoved)
 
 # Channels
 - [Editing Channel](#editing-channel)
@@ -431,11 +470,23 @@ To pin message you would need to call `PinMessage` function
 This function has many overloads but it leads to:
 - Message => Can be as id (Snowflake) or DiscordMessage object
 
+Example:
+
+```cpp
+channel->PinMessage(109380839183291);
+```
+
 ## Unpin Message
 To unpin message you would need to call `UnpinMessage` function
 
 This function has many overloads but it leads to:
 - Message => Can be as id (Snowflake) or DiscordMessage object
+
+Example:
+
+```cpp
+channel->UnpinMessage(109380839183291);
+```
 
 ## Add Recipient
 This will only work in DM / Group DM channels
@@ -511,6 +562,12 @@ This function has 3 overloads which leads to:
 - Position => Channel position
 - Lock Permission => boolean, syncs the permission overwrites with the new parent, if moving to a new category
 - Parent Id => Id (Snowflake), the new parent ID for the channel that is moved
+
+Example:
+
+```cpp
+guild->EditChannelPosition(1238019381203819313, 1, false);
+```
 
 ## Create Emoji
 To create emoji, you would need to call `CreateEmoji` function and pass a `DiscordEmojiCreate` object
@@ -744,4 +801,459 @@ Example:
 
 ```cpp
 guild->DeleteRole(127319827391283712);
+```
+
+# Client
+- [Leave Guild](#leave-guild)
+- [Delete Guild](#delete-guild)
+- [Edit](#edit)
+- [Get DM Channel](#get-dm-channel)
+
+## Leave Guild
+To leave specific guild, you would need to call `LeaveGuild` function
+
+This function has 3 overloads which leads to:
+- Guild => Can be as id (Snowflake) or DiscordGuild object
+
+Example
+
+```cpp
+client->LeaveGuild(123871897391732);
+```
+
+## Delete Guild
+To delete guild, you would need to call `DeleteGuild` function
+
+This function has 3 overloads which leads to:
+- Guild => Can be as id (Snowflake) or DiscordGuild object
+
+Example
+
+```cpp
+client->DeleteGuild(123871897391732);
+```
+
+## Edit
+To edit current client, you would need to call `Edit` function and pass a lambda
+
+Example
+
+```cpp
+client->Edit([](Discord::DiscordClientEdit* edit)
+{
+	edit->Username = "new-username";
+});
+```
+
+## Get DM Channel
+To get dm channel, you would need to call `GetOrCreateDMChannel` function
+
+This function has 3 overloads which leads to:
+- User => Can be as id (Snowflake) or DiscordUser object
+
+Example
+
+```cpp
+auto pDMChannel = client->GetOrCreateDMChannel(12831082391328123);
+```
+
+# Events
+Example event handling:
+
+```cpp
+client->OnReady([]() { std::cout << "Client is ready!\n"; });
+client.OnChannelCreated([](const Discord::DiscordChannelEventInfo& info)
+{
+    if (auto guildChannel = std::dynamic_pointer_cast<Discord::DiscordGuildChannel>(info.GetChannel()))
+    {
+        std::cout << "New channel created with name: " << guildChannel->GetName() << "!\n";
+    }
+});
+```
+
+- [OnReady](#onready)
+- [OnTypingStart](#ontypingstart)
+- [OnPresenceUpdated](#onpresenceupdated)
+- [OnMessageCreated](#onmessagecreated)
+- [OnMessageUpdated](#onmessageupdated)
+- [OnReactionAdded](#onreactionadded)
+- [OnReactionRemoved](#onreactionremoved)
+- [OnAllReactionRemoved](#onallreactionremoved)
+- [OnSingleReactionFullyRemoved](#onsinglereactionfullyremoved)
+- [OnInviteCreated](#oninvitecreated)
+- [OnInviteDeleted](#oninvitedeleted)
+- [OnGuildCreated](#onguildcreated)
+- [OnGuildUpdated](#onguildupdated)
+- [OnGuildRemoved](#onguildremoved)
+- [OnEmojiUpdated](#onemojiupdated)
+- [OnGuildMembersChunk](#onguildmemberschunk)
+- [OnGuildIntegrationsUpdated](#onguildintegrationsupdated)
+- [OnUserUpdated](#onuserupdated)
+- [OnGuildBanAdded](#onguildbanadded)
+- [OnGuildBanRemoved](#onguildbanremoved)
+- [OnGuildRoleAdded](#onguildroleadded)
+- [OnGuildRoleRemoved](#onguildroleremoved)
+- [OnGuildRoleUpdated](#onguildroleupdated)
+- [OnGuildMemberAdded](#onguildmemberadded)
+- [OnGuildMemberRemoved](#onguildmemberremoved)
+- [OnGuildMemberUpdated](#onguildmemberupdated)
+- [OnChannelCreated](#onchannelcreated)
+- [OnChannelUpdated](#onchannelupdated)
+- [OnChannelRemoved](#onchannelremoved)
+
+## OnReady
+Lambda object: `none`
+
+Example:
+
+```cpp
+client->OnReady([]() { std::cout << "Client is ready!\n"; });
+```
+
+## OnTypingStart
+Lambda object: `DiscordTypingStartEventInfo`
+
+Example:
+
+```cpp
+client->OnTypingStart([](const Discord::DiscordTypingStartEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnPresenceUpdated
+Lambda object: `DiscordPresenceEventInfo`
+
+Example:
+
+```cpp
+client->OnPresenceUpdated(const Discord:;DiscordPresenceEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnMessageCreated
+Lambda object: `DiscordMessageEventInfo`
+
+Example:
+
+```cpp
+client->OnMessageCreated(const Discord::DiscordMessageEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnMessageUpdated
+Lambda object: `DiscordMessageEventInfo`
+
+Example:
+
+```cpp
+client->OnMessageUpdated(const Discord::DiscordMessageEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnMessageDeleted
+Lambda object: `DiscordChannelEventInfo`
+
+Example:
+
+```cpp
+client->OnMessageDeleted(const Discord::DiscordChannelEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnReactionAdded
+Lambda object: `DiscordReactionEventInfo`
+
+Example:
+
+```cpp
+client->OnReactionAdded(const Discord::DiscordReactionEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnReactionRemoved
+Lambda object: `DiscordReactionEventInfo`
+
+Example:
+
+```cpp
+client->OnReactionRemoved(const Discord::DiscordReactionEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnAllReactionRemoved
+Lambda object: `DiscordReactionEventInfo`
+
+Example:
+
+```cpp
+client->OnAllReactionRemoved(const Discord::DiscordReactionEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnSingleReactionFullyRemoved
+Lambda object: `DiscordReactionEventInfo`
+
+Example:
+
+```cpp
+client->OnSingleReactionFullyRemoved(const Discord::DiscordReactionEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnInviteCreated
+Lambda object: `DiscordInviteCreatedEventInfo`
+
+Example:
+
+```cpp
+client->OnInviteCreated(const Discord::DiscordInviteCreatedEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnInviteDeleted
+Lambda object: `DiscordInviteDeletedEventInfo`
+
+Example:
+
+```cpp
+client->OnInviteDeleted(const Discord::DiscordInviteDeletedEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildCreated
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildCreated(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildUpdated
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildUpdated(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildRemoved
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildRemoved(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnEmojiUpdated
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnEmojiUpdated(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildMembersChunk
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildMembersChunk(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildIntegrationsUpdated
+Lambda object: `DiscordEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildIntegrationsUpdated(const Discord::DiscordEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnUserUpdated
+Lambda object: `DiscordUserEventInfo`
+
+Example:
+
+```cpp
+client->OnUserUpdated(const Discord::DiscordUserEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildBanAdded
+Lambda object: `DiscordUserEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildBanAdded(const Discord::DiscordUserEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildBanRemoved
+Lambda object: `DiscordUserEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildBanRemoved(const Discord::DiscordUserEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildRoleAdded
+Lambda object: `DiscordRoleEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildRoleAdded(const Discord::DiscordRoleEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildRoleRemoved
+Lambda object: `DiscordRoleEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildRoleRemoved(const Discord::DiscordRoleEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildRoleUpdated
+Lambda object: `DiscordRoleEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildRoleUpdated(const Discord::DiscordRoleEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildMemberAdded
+Lambda object: `DiscordMemberEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildMemberAdded(const Discord::DiscordMemberEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildMemberRemoved
+Lambda object: `DiscordUserEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildMemberRemoved(const Discord::DiscordUserEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnGuildMemberUpdated
+Lambda object: `DiscordMemberEventInfo`
+
+Example:
+
+```cpp
+client->OnGuildMemberUpdated(const Discord::DiscordMemberEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnChannelCreated
+Lambda object: `DiscordChannelEventInfo`
+
+Example:
+
+```cpp
+client->OnChannelCreated(const Discord::DiscordChannelEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnChannelUpdated
+Lambda object: `DiscordChannelEventInfo`
+
+Example:
+
+```cpp
+client->OnChannelUpdated(const Discord::DiscordChannelEventInfo& info)
+{
+	// do something
+});
+```
+
+## OnChannelRemoved
+Lambda object: `DiscordChannelEventInfo`
+
+Example:
+
+```cpp
+client->OnChannelRemoved(const Discord::DiscordChannelEventInfo& info)
+{
+	// do something
+});
 ```

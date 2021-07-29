@@ -247,7 +247,7 @@ namespace Discord
 		return ptr;
 	}
 
-	Ptr<DiscordChannel> DiscordClient::GetChannel(Snowflake id)
+	Ptr<DiscordChannel> DiscordClient::GetChannelById(Snowflake id)
 	{
 		Ptr<DiscordChannel> ptr;
 
@@ -864,7 +864,7 @@ namespace Discord
 				if (!channel)
 					return;
 
-				DiscordInviteCreated invite;
+				DiscordInviteCreatedEventInfo invite;
 				invite.Guild = guild;
 				invite.Client = this;
 				invite.Channel = channel;
@@ -971,6 +971,24 @@ namespace Discord
 					}
 
 					MessageUpdatedCallback(info);
+				}
+			}
+			else if (type == "MESSAGE_DELETE")
+			{
+				if (MessageDeletedCallback)
+				{
+					Ptr<DiscordMessage> message(new DiscordMessage(this, data));
+
+					if (!message->Channel)
+					{
+						return;
+					}
+
+					DiscordChannelEventInfo info;
+					info.Guild = message->Guild;
+					info.Client = this;
+
+					MessageDeletedCallback(info);
 				}
 			}
 			else if (type == "MESSAGE_REACTION_ADD")
