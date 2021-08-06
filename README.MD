@@ -1,5 +1,5 @@
 # KCord
-KCord is C++ Unofficial wrapper for the Discord API
+KCord is C++ 17 Unofficial wrapper for the Discord API
 
 It is designed to be as fast as possible, low memory, and reliable.
 
