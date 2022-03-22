@@ -120,8 +120,3 @@ if (result.IsSuccess)
 [Abood#1550](https://github.com/AboodTBR)
 
 [Alexander#9673](https://github.com/Alexander9673)
-
-# Question?
-Please join this discord server to ask questions related to this library
-
-[![KCord Discord Server](https://discord.com/api/guilds/868134117965955162/embed.png?style=banner3)](https://discord.gg/YQg8x29MPw)
